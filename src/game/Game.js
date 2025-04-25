@@ -7,34 +7,48 @@ export default class Game {
         this.deck = new Deck();
         this.board = new Board();
         this.score = new Score();
-        this.selectedCards = [];
-        this.matchedPairs = 0;
-        this.moves = 0;
-        this.time = 0;
-        this.timer = null;
-    }
-
-    start() {
-        this.resetGame();
+        this.resetGameState();
         this.setupEventListeners();
     }
 
-    resetGame() {
-        this.deck.shuffle();
-        this.board.render(this.deck.cards);
-        this.score.reset();
+    resetGameState() {
         this.selectedCards = [];
         this.matchedPairs = 0;
         this.moves = 0;
         this.time = 0;
-        clearInterval(this.timer); // Clear any existing timer
-        this.startTimer(); // Start the timer
+        this.isPlaying = false;
+        clearInterval(this.timer);
+    }
+
+    start() {
+        this.resetGameState();
+        this.deck.shuffle();
+        this.board.render(this.deck.cards);
+        this.score.reset();
+        this.isPlaying = true;
+        this.startTimer();
+    }
+
+    startTimer() {
+        clearInterval(this.timer);
+        this.time = 0;
+        this.score.updateTime(this.time);
+        this.timer = setInterval(() => {
+            if (this.isPlaying) {
+                this.time++;
+                this.score.updateTime(this.time);
+            }
+        }, 1000);
     }
 
     setupEventListeners() {
-        document.getElementById('restart-btn').addEventListener('click', () => this.resetGame());
+        document.getElementById('restart-btn').addEventListener('click', () => {
+            this.start();
+        });
         
         this.board.element.addEventListener('click', (e) => {
+            if (!this.isPlaying) return;
+            
             const cardElement = e.target.closest('.card:not(.matched)');
             if (cardElement && this.selectedCards.length < 2) {
                 this.handleCardClick(cardElement);
