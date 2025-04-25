@@ -9,8 +9,10 @@ export default class Deck {
     createDeck() {
         const values = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
         const pairs = [...values, ...values]; // Create pairs
+        console.log(pairs);
         
         this.cards = pairs.map((value, index) => new Card(index, value));
+        console.log(this.cards);
     }
 
     shuffle() {

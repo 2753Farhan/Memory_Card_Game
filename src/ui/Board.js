@@ -4,6 +4,7 @@ export default class Board {
     }
 
     render(cards) {
+        console.log(this);
         this.element.innerHTML = '';
         cards.forEach(card => {
             const cardElement = document.createElement('div');

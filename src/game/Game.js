@@ -7,11 +7,14 @@ export default class Game {
         this.deck = new Deck();
         this.board = new Board();
         this.score = new Score();
-        this.resetGameState();
+        // this.resetGameState();
         this.setupEventListeners();
     }
 
     resetGameState() {
+        this.deck = new Deck();
+        this.board = new Board();
+        this.score = new Score();
         this.selectedCards = [];
         this.matchedPairs = 0;
         this.moves = 0;
@@ -21,12 +24,14 @@ export default class Game {
     }
 
     start() {
+        console.log(this);
         this.resetGameState();
         this.deck.shuffle();
         this.board.render(this.deck.cards);
         this.score.reset();
         this.isPlaying = true;
         this.startTimer();
+        console.log(this);
     }
 
     startTimer() {
@@ -71,6 +76,7 @@ export default class Game {
     }
 
     flipCard(card, cardElement) {
+        console.log(cardElement);
         card.flip();
         cardElement.classList.toggle('flipped');
         this.selectedCards.push(card);
