@@ -9,6 +9,8 @@ export function startGame(){
 
     let moveCounter = 0;
     document.getElementById("move-value").innerHTML = moveCounter;
+
+    let clickedCards = 0;
     
 
     
@@ -19,7 +21,16 @@ export function startGame(){
         board.appendChild(cardElement);
         cardElement.addEventListener("click", () => {
             cardElement.classList.toggle("flipped");
-            moveCounter++;
+            clickedCards++;
+            if (clickedCards === 2) {
+                moveCounter++;
+                const flippedCards = document.querySelectorAll(".flipped:not(.matched)");
+                if (flippedCards.length === 2) {
+                    matchCards(flippedCards[0], flippedCards[1]);
+                    clickedCards = 0;
+                }
+            }
+            
             document.getElementById("move-value").innerHTML = moveCounter;
         });
     
@@ -30,6 +41,7 @@ export function startGame(){
         const minutes = Math.floor(seconds / 60);
         const displaySeconds = seconds % 60;
         document.getElementById("time-value").innerHTML = `${String(minutes).padStart(2, '0')}:${String(displaySeconds).padStart(2, '0')}`;
+        
     }, 1000);
 
 
@@ -38,6 +50,17 @@ export function startGame(){
     
     document.getElementById("time-value").innerHTML = "00:00";
     
+}
+function matchCards(card1, card2) {
+    if (card1.textContent === card2.textContent) {
+        card1.classList.add("matched");
+        card2.classList.add("matched");
+    } else {
+        setTimeout(() => {
+            card1.classList.remove("flipped");
+            card2.classList.remove("flipped");
+        }, 1000);
+    }
 }
     
 
