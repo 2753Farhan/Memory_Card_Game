@@ -3,7 +3,8 @@ export function startGame(){
 
     let cardArray = ['A', 'A', 'B', 'B', 'C', 'C', 'D', 'D', 'E', 'E', 'F', 'F', 'G', 'G', 'H', 'H'];
     cardArray = shuffle(cardArray);
-    const board = document.getElementById("game-board")
+    const board = document.getElementById("game-board");
+    let locked = false;
 
 
 
@@ -19,15 +20,20 @@ export function startGame(){
         cardElement.classList.add("card");
         cardElement.textContent = card;
         board.appendChild(cardElement);
-        cardElement.addEventListener("click", () => {
+        cardElement.addEventListener("click",async () => {
+            if (locked || cardElement.classList.contains("flipped") || cardElement.classList.contains("matched")) {
+                return;
+            }
             cardElement.classList.toggle("flipped");
             clickedCards++;
             if (clickedCards === 2) {
                 moveCounter++;
                 const flippedCards = document.querySelectorAll(".flipped:not(.matched)");
                 if (flippedCards.length === 2) {
-                    matchCards(flippedCards[0], flippedCards[1]);
+                    locked = true;
+                    await matchCards(flippedCards[0], flippedCards[1]);
                     clickedCards = 0;
+                    locked = false;
                 }
             }
             
@@ -51,15 +57,17 @@ export function startGame(){
     document.getElementById("time-value").innerHTML = "00:00";
     
 }
-function matchCards(card1, card2) {
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+async function matchCards(card1, card2) {
     if (card1.textContent === card2.textContent) {
         card1.classList.add("matched");
         card2.classList.add("matched");
     } else {
-        setTimeout(() => {
+        await delay(1000); // Wait for 1 second before flipping back
             card1.classList.remove("flipped");
             card2.classList.remove("flipped");
-        }, 1000);
     }
 }
     
