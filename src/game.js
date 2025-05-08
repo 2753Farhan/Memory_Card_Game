@@ -1,16 +1,32 @@
 
 export function startGame(){
-
+    const board = document.getElementById("game-board");
+    board.innerHTML = ""; // Clear the board
     if (window.timerInterval) {
         clearInterval(window.timerInterval);
     }
 
-    let cardArray = ['A', 'A', 'B', 'B', 'C', 'C', 'D', 'D', 'E', 'E', 'F', 'F', 'G', 'G', 'H', 'H'];
+    const input = document.getElementById("unique-card-numbers");
+    const uniqueCardNumbers = parseInt(input.value);
+
+    document.getElementById("move-value").innerHTML = "0";
+    document.getElementById("time-value").innerHTML = "00:00";
+
+   
+
+
+    let cardArray = [];
+    for (let i = 0; i < uniqueCardNumbers; i++) {
+        const letter = String.fromCharCode(65 + i); // 65 = ASCII for 'A'
+        cardArray.push(letter, letter); // Push pairs
+      }
+    console.log(cardArray);
     cardArray = shuffle(cardArray);
-    const board = document.getElementById("game-board");
+
 
     const matchState = {
         matchedCards: 0,
+        totalUniqueCards: uniqueCardNumbers,
         // flippedCards: 0,
         // moveCounter: 0,
         seconds: 0,
@@ -50,14 +66,6 @@ export function startGame(){
         });
     
     })
-    // let seconds = 0;
-    // setInterval(() => {
-    //     matchState.seconds++;
-    //     const minutes = Math.floor(matchState.seconds / 60);
-    //     const displaySeconds = matchState.seconds % 60;
-    //     document.getElementById("time-value").innerHTML = `${String(minutes).padStart(2, '0')}:${String(displaySeconds).padStart(2, '0')}`;
-        
-    // }, 1000);
 
     window.timerInterval = setInterval(() => {
         matchState.seconds++;
@@ -81,7 +89,8 @@ async function matchCards(card1, card2, match) {
         card2.classList.remove("flipped");
         match.matchedCards += 1; // Increment matched cards by 2
         console.log(match.matchedCards);
-        if (match.matchedCards === 8) {
+        if (match.matchedCards === match.totalUniqueCards) {
+            clearInterval(window.timerInterval); // Stop the timer
             console.log("jhfdgvdfhgd")
             alert("You win!");
             document.getElementById("game-board").innerHTML = ""; // Clear the board

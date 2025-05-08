@@ -10,6 +10,15 @@
     <div>
         <h1>Memory Card Game</h1>
         <div class="heading">
+            <!-- <div class="control-group">
+                <label for="card-symbols">Enter symbols (any characters/emojis/numbers):</label>
+                <input type="text" id="card-symbols" placeholder="e.g., ABC123🍎🚗">
+                <small>We'll automatically create </small>
+            </div> -->
+            <div class="controls">
+                <input type="number" id="unique-card-numbers" placeholder="Number of unique cards (even)" min="2" max="26" value="4" />
+                <button id="start-button">Start Game</button>
+              </div>
             <div class="moves" id="moves">
                 <h2>Number of Moves</h2>
                 <div class="move-value" id="move-value">0</div>     
