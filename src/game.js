@@ -14,7 +14,7 @@ export function startGame() {
     const board = document.getElementById("game-board");
     //Here the board can be null
     board.innerHTML = ""; 
-
+    //type asser is necessary here
     const input = document.getElementById("unique-card-numbers");
     const uniqueCardNumbers = parseInt(input.value);
 
