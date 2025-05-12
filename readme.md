@@ -2,7 +2,6 @@
 
 A classic memory card matching game built with HTML, CSS, and JavaScript where players test their memory by finding matching pairs of cards.
 
-
 ## Table of Contents
 
 - [Description](#description)
